@@ -1,19 +1,27 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-const App = () => {
-    const buttonText = {name:'asdf'};
-  return (
-    <div>
-      <label className="label" htmlFor="name">
-        Enter Name:
-      </label>
-      <input id="name" type="text" />
-      <button style={{ backgroundColor: "blue", color: "white" }}>
-        {buttonText.name}
-      </button>
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { lat: null, errorMessage: "" };
+    window.navigator.geolocation.getCurrentPosition(
+      position => {
+        this.setState({ lat: position.coords.latitude });
+      },
+      err => {
+        this.setState({ errorMessage: err.message });
+      }
+    );
+  }
+  render() {
+    return( <div>Latitude: {this.state.lat}<br/>
+    Error: {
+      this.state.errorMessage
+    }
     </div>
-  );
-};
+    )
+  }
+}
 
 ReactDOM.render(<App />, document.querySelector("#root"));
